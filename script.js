@@ -9,27 +9,31 @@ const game = (function () {
 
     var players = 0;
 
-    function gameboard() {
+    const player1 = createPlayer('bob', 'x');
 
-        var gameboard = ["empty", "empty", "empty", "empty", "empty", "empty", "empty", "empty", "empty"];
+    const player2 = createPlayer('steve', 'o');
 
-        return gameboard
 
-    }
+    var gameboard = ["empty", "empty", "empty", "empty", "empty", "empty", "empty", "empty", "empty"];
+
+
 
     function playRound(player, num) {
 
-        if (gameboard[num] !== "empty") {
+        //here will be the on event click that will mark the screen
 
 
+        if (gameboard[num] === "empty") {
 
             gameboard[num] = player.mark;
 
-            roundsPlayed++;
+            return
 
         }
 
         alert("Spot already played")
+
+
 
     }
 
@@ -61,18 +65,31 @@ const game = (function () {
 
     }
 
-    function player(name, mark) {
+    function createPlayer(name, mark) {
 
-        var name = toString(name);
+        var score = 0;
 
         players++
 
-        return { name, mark }
+        return { name, mark, score };
 
     }
 
 
-    return { gameboard, player, playRound, eval };
+    function addScore(player) {
+
+        player.score++;
+
+
+    }
+
+
+    function resetBoard() {
+
+        gameboard = ["empty", "empty", "empty", "empty", "empty", "empty", "empty", "empty", "empty"];
+    }
+
+    return { gameboard, createPlayer, playRound, eval, player1, player2, players, addScore };
 
 
 })();
