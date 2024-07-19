@@ -1,9 +1,4 @@
 
-
-
-
-
-
 const game = (function () {
 
 
@@ -12,6 +7,10 @@ const game = (function () {
     const player1 = createPlayer('bob', 'x');
 
     const player2 = createPlayer('steve', 'o');
+
+    playerOneTurn = true;
+
+    playerTwoTurn = false;
 
 
     var gameboard = ["empty", "empty", "empty", "empty", "empty", "empty", "empty", "empty", "empty"];
@@ -27,13 +26,12 @@ const game = (function () {
 
             gameboard[num] = player.mark;
 
-            return
+            return true
 
         }
 
-        alert("Spot already played")
 
-
+        return false
 
     }
 
@@ -78,7 +76,18 @@ const game = (function () {
 
     function addScore(player) {
 
-        player.score++;
+        if (player === player1) {
+            player.score++;
+            var score = document.querySelector("#player1Score")
+            score.innerHTML = player.score
+
+        }
+
+        if (player === player2) {
+            player.score++;
+            var score = document.querySelector("#player2Score")
+            score.innerHTML = player.score
+        }
 
 
     }
@@ -89,7 +98,78 @@ const game = (function () {
         gameboard = ["empty", "empty", "empty", "empty", "empty", "empty", "empty", "empty", "empty"];
     }
 
-    return { gameboard, createPlayer, playRound, eval, player1, player2, players, addScore };
+    return { gameboard, createPlayer, playRound, eval, player1, player2, players, addScore, playerOneTurn, playerTwoTurn, resetBoard };
 
 
 })();
+
+
+const boxes = document.querySelectorAll(".box")
+
+for (let i = 0; i < boxes.length; i++) { //can loop over node list and set indivdual to a box at i
+    let box = boxes[i];
+
+    box.addEventListener('click', function (e) {
+
+        if (game.playerOneTurn) {
+            if (game.playRound(game.player1, Number(box.id))) {
+                game.playerOneTurn = false
+                game.playerTwoTurn = true;
+                var imgMark = document.createElement("img");
+
+                imgMark.src = "images/x-mark-256.png"
+
+                box.appendChild(imgMark);
+
+                if (game.eval(game.player1)) {
+                    alert(game.player1.name + 'Won')
+                    game.addScore(game.player1)
+                }
+
+            } else {
+                alert("spot already played")
+            }
+
+
+        } else {
+
+            if (game.playRound(game.player2, Number(box.id))) {
+
+                game.playerOneTurn = true;
+                game.playerTwoTurn = false;
+                var imgMark = document.createElement("img");
+
+                imgMark.src = "images/circle-outline-256.png"
+
+                box.appendChild(imgMark);
+
+                if (game.eval(game.player2)) {
+                    alert(player2.name + 'won')
+                    game.addScore(game.player2)
+                }
+
+            } else {
+                alert("spot already played")
+            }
+
+        }
+
+    });
+}
+
+const resetBt = document.querySelector("#resetBt")
+
+resetBt.addEventListener('click', function (e) {
+
+    for (let i = 0; i < boxes.length; i++) { //can loop over node list and set indivdual to a box at i
+        let box = boxes[i];
+
+        if (box.firstChild) {
+            box.firstChild.remove();
+        }
+
+    }
+
+    game.resetBoard();
+
+});
