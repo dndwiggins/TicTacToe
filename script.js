@@ -173,3 +173,28 @@ resetBt.addEventListener('click', function (e) {
     game.resetBoard();
 
 });
+
+
+const nameBt1 = document.querySelector("#nameBt1")
+
+nameBt1.addEventListener('click', function (e) {
+
+    game.player1.name = window.prompt("Enter Your Name")
+
+    document.querySelector("#player1Name").innerHTML = game.player1.name
+
+
+
+});
+
+const nameBt2 = document.querySelector("#nameBt2")
+
+nameBt2.addEventListener('click', function (e) {
+
+    game.player2.name = window.prompt("Enter Your Name")
+
+    document.querySelector("#player2Name").innerHTML = game.player2.name
+
+
+
+});
